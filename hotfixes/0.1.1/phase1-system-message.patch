@@ -1,0 +1,93 @@
+--- app/cinder_ui.py
++++ app/cinder_ui.py
+@@ -146,13 +146,51 @@
+     def _set_status(self, text: str, color: str = "#9aa0aa") -> None:
+         self.status_label.configure(text=text, foreground=color)
+ 
++    @staticmethod
++    def _expanded_path(value: object) -> Path:
++        raw = str(value or "").strip()
++        if not raw:
++            return Path()
++        return Path(os.path.expandvars(os.path.expanduser(raw)))
++
++    def _candidate_roots(self) -> list[Path]:
++        roots = [BASE_DIR]
++        local_appdata = os.environ.get("LOCALAPPDATA")
++        if local_appdata:
++            installed = Path(local_appdata) / "Cinder_Alpha"
++            if installed not in roots:
++                roots.append(installed)
++        return roots
++
++    def _resolve_runtime_file(self, config_key: str, patterns: tuple[str, ...]) -> Path:
++        configured = self._expanded_path(self.config_data.get(config_key, ""))
++        if configured.is_file():
++            return configured
++
++        for root in self._candidate_roots():
++            for pattern in patterns:
++                matches = sorted(root.glob(pattern), key=lambda item: item.stat().st_mtime, reverse=True)
++                if matches:
++                    return matches[0]
++        return configured
++
+     def _server_command(self) -> list[str]:
+-        exe = Path(self.config_data.get("server_executable", ""))
+-        model = Path(self.config_data.get("model_path", ""))
++        exe = self._resolve_runtime_file(
++            "server_executable",
++            ("runtime/**/llama-server.exe", "**/llama-server.exe"),
++        )
++        model = self._resolve_runtime_file(
++            "model_path",
++            ("models/Qwen3.5-9B-Q4_K_M.gguf", "models/*.gguf"),
++        )
+         if not exe.is_file():
+-            raise FileNotFoundError(f"llama-server.exe not found: {exe}")
++            raise FileNotFoundError(
++                "llama-server.exe was not found. Run INSTALL.cmd once, or set server_executable in config/settings.json."
++            )
+         if not model.is_file():
+-            raise FileNotFoundError(f"Model file not found: {model}")
++            raise FileNotFoundError(
++                "The GGUF model was not found. Run INSTALL.cmd once, or set model_path in config/settings.json."
++            )
+ 
+         command = [
+             str(exe),
+@@ -282,9 +320,12 @@
+                 limit=int(self.config_data.get("memory_results", 6)),
+                 exclude_session=self.session_id,
+             )
+-            messages: list[dict[str, str]] = [{"role": "system", "content": self.persona}]
++            system_sections = [self.persona]
+             if memory_context:
+-                messages.append({"role": "system", "content": memory_context})
++                system_sections.append(memory_context)
++            messages: list[dict[str, str]] = [
++                {"role": "system", "content": "\n\n".join(system_sections)}
++            ]
+             messages.extend(recent)
+             reply = self.client.chat(
+                 model=str(self.config_data["model_alias"]),
+--- config/persona_activation.txt
++++ config/persona_activation.txt
+@@ -1 +1,3 @@
+-You are Cinder, Senti's blunt, loyal local AI co-pilot. Help first. Give direct answers, catch bad assumptions, explain risks, and provide concrete next actions. Be clever, observant, concise, slightly smug, and naturally playful, with occasional innuendo when it fits, never at the cost of usefulness. Do not flatter, moralize, ramble, or pretend certainty. Never claim an action was completed unless it actually was. Protect the user from expensive, dangerous, or irreversible mistakes.
++You are Cinder, Senti's blunt, loyal local AI co-pilot. Answer the actual question first and give a concrete next action when one is useful. Be observant, concise, slightly smug, playful, and occasionally suggestive when it fits, but never let personality obstruct the work. Challenge weak assumptions and warn about expensive, dangerous, or irreversible mistakes. Never claim an action happened unless it actually did. Never invent memory, access, tools, results, or certainty.
++
++Speak naturally, not like a dashboard or customer-service bot. Default to one to three short paragraphs. Do not use Markdown headings, bold labels, bullet lists, fake status readouts, canned greetings, rhetorical filler, or long scene-setting unless Senti asks for structure or detail. Do not repeat the question. Do not announce that you are an AI. Keep the bite; lose the book report.
+--- config/settings.json
++++ config/settings.json
+@@ -5,8 +5,8 @@
+   "host": "127.0.0.1",
+   "port": 8088,
+   "context_size": 8192,
+-  "max_output_tokens": 768,
+-  "temperature": 0.72,
++  "max_output_tokens": 384,
++  "temperature": 0.65,
+   "top_p": 0.9,
+   "min_p": 0.05,
+   "repeat_penalty": 1.08,
