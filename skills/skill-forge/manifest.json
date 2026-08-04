@@ -1,0 +1,16 @@
+{
+  "name": "Skill Forge",
+  "slug": "skill-forge",
+  "version": "0.1.0",
+  "description": "Creates and validates canonical Neon Cortex skill packages.",
+  "entrypoint": "SKILL.md",
+  "triggers": [
+    "create a reusable skill",
+    "scaffold a skill",
+    "validate a skill",
+    "repair a skill package"
+  ],
+  "requires_confirmation": [
+    "overwrite an existing skill"
+  ]
+}
