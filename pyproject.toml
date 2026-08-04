@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neon-cortex-skillforge"
+version = "0.1.0"
+description = "Create and validate canonical Neon Cortex skill packages."
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+include = ["skillforge*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
