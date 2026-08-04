@@ -1,0 +1,16 @@
+{
+  "timestamp_utc": "2026-08-04T02:20:27+00:00",
+  "passed": true,
+  "backend_gpu_layers": 999,
+  "model": "C:\\Users\\crazy\\AppData\\Local\\Cinder_Alpha\\models\\Qwen3.5-9B-Q4_K_M.gguf",
+  "model_size_bytes": 5627044256,
+  "load_seconds": 4.188,
+  "generation_seconds": 0.297,
+  "response": "CINDER ONLINE\n17 + 25 = 42",
+  "model_format_check": true,
+  "memory": {
+    "ok": true,
+    "fts5": true,
+    "matches": 2
+  }
+}
