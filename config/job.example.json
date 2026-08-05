@@ -1,0 +1,19 @@
+{
+  "task_id": "NC-BOOT-001",
+  "goal": "Add a health command that reports configured worker roles without contacting any model endpoint.",
+  "workspace": "C:/Projects/Neon-Cortex",
+  "test_commands": [
+    ["python", "-m", "pytest", "-q"]
+  ],
+  "allowed_binaries": ["python", "py", "pytest", "git"],
+  "max_rounds": 3,
+  "max_minutes": 20,
+  "allow_commit": true,
+  "allow_push": false,
+  "heavy_escalation": true,
+  "context_files": [
+    "pyproject.toml",
+    "neon_relay/main.py",
+    "tests/test_relay.py"
+  ]
+}
