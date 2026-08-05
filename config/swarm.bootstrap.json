@@ -1,0 +1,66 @@
+{
+  "github_repo": "crazytaxzi/Neon-Cortex",
+  "github_token_file": "%LOCALAPPDATA%/Neon_Cortex/secrets/github-token.txt",
+  "poll_seconds": 20,
+  "heavy_role": "heavy-review",
+  "max_snapshot_bytes": 180000,
+  "max_file_bytes": 40000,
+  "workers": [
+    {
+      "name": "bootstrap-planner-a",
+      "role": "planner",
+      "endpoint": "http://127.0.0.1:8081",
+      "model": "qwen-bootstrap",
+      "temperature": 0.2,
+      "max_tokens": 700
+    },
+    {
+      "name": "bootstrap-planner-b",
+      "role": "planner",
+      "endpoint": "http://127.0.0.1:8081",
+      "model": "qwen-bootstrap",
+      "temperature": 0.4,
+      "max_tokens": 700
+    },
+    {
+      "name": "bootstrap-critic",
+      "role": "critic",
+      "endpoint": "http://127.0.0.1:8081",
+      "model": "qwen-bootstrap",
+      "temperature": 0.1,
+      "max_tokens": 350
+    },
+    {
+      "name": "bootstrap-left-hand-a",
+      "role": "coder",
+      "endpoint": "http://127.0.0.1:8081",
+      "model": "qwen-bootstrap",
+      "temperature": 0.1,
+      "max_tokens": 1800
+    },
+    {
+      "name": "bootstrap-left-hand-b",
+      "role": "coder",
+      "endpoint": "http://127.0.0.1:8081",
+      "model": "qwen-bootstrap",
+      "temperature": 0.25,
+      "max_tokens": 1800
+    },
+    {
+      "name": "bootstrap-repair-hand",
+      "role": "repair",
+      "endpoint": "http://127.0.0.1:8081",
+      "model": "qwen-bootstrap",
+      "temperature": 0.1,
+      "max_tokens": 1800
+    },
+    {
+      "name": "gpt-oss-escalation",
+      "role": "heavy-review",
+      "endpoint": "http://127.0.0.1:8082",
+      "model": "gpt-oss-20b",
+      "temperature": 0.15,
+      "max_tokens": 800
+    }
+  ]
+}
