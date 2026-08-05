@@ -25,7 +25,7 @@ $python = Join-Path $venv "Scripts\python.exe"
 & $python -m pip install --upgrade pip
 & $python -m pip install -e $RepoPath
 
-$configSource = Join-Path $RepoPath "config\swarm.example.json"
+$configSource = Join-Path $RepoPath "config\swarm.bootstrap.json"
 $configTarget = Join-Path $configDir "swarm.json"
 if (-not (Test-Path $configTarget)) {
     (Get-Content $configSource -Raw).Replace("%LOCALAPPDATA%", ($env:LOCALAPPDATA -replace '\\','/')) |
@@ -53,8 +53,11 @@ $runner = Join-Path $InstallRoot "Start-NeonRelay.cmd"
 pause
 "@ | Set-Content -Encoding ASCII $runner
 
+& $python -m neon_relay --config $configTarget check
+
 Write-Host ""
-Write-Host "Neon Relay installed." -ForegroundColor Green
-Write-Host "Edit worker endpoints here: $configTarget"
+Write-Host "Neon Relay installed with the existing-model bootstrap profile." -ForegroundColor Green
+Write-Host "Configuration: $configTarget"
 Write-Host "Start it here: $runner"
 Write-Host "The relay processes open GitHub issues whose titles begin with [NEON TASK]."
+Write-Host "Qwen is expected at http://127.0.0.1:8081 and GPT-OSS escalation at http://127.0.0.1:8082."
