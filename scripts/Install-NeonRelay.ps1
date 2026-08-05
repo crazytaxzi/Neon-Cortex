@@ -49,6 +49,8 @@ if (-not (Test-Path $tokenFile)) {
 $runner = Join-Path $InstallRoot "Start-NeonRelay.cmd"
 @"
 @echo off
+setlocal
+set "NEON_WORKSPACE=$RepoPath"
 "$python" -m neon_relay --config "$configTarget" watch-github
 pause
 "@ | Set-Content -Encoding ASCII $runner
@@ -57,6 +59,7 @@ pause
 
 Write-Host ""
 Write-Host "Neon Relay installed with the existing-model bootstrap profile." -ForegroundColor Green
+Write-Host "Workspace alias: %NEON_WORKSPACE% -> $RepoPath"
 Write-Host "Configuration: $configTarget"
 Write-Host "Start it here: $runner"
 Write-Host "The relay processes open GitHub issues whose titles begin with [NEON TASK]."
