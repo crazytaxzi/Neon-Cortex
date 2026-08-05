@@ -5,11 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "neon-cortex-skillforge"
 version = "0.1.0"
-description = "Create and validate canonical Neon Cortex skill packages."
+description = "Create and validate canonical Neon Cortex skill packages and run the local Neon Relay swarm supervisor."
 requires-python = ">=3.10"
 
+[project.scripts]
+neon-relay = "neon_relay.main:main"
+
 [tool.setuptools.packages.find]
-include = ["skillforge*"]
+include = ["skillforge*", "neon_relay*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
