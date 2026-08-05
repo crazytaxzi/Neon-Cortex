@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -60,10 +61,11 @@ class JobContract:
                 raise ValueError("each test command must be a non-empty JSON array")
             tests.append(tuple(str(part) for part in command))
 
+        workspace_value = os.path.expandvars(str(data["workspace"]))
         return cls(
             task_id=str(data["task_id"]),
             goal=str(data["goal"]),
-            workspace=Path(str(data["workspace"])).expanduser().resolve(),
+            workspace=Path(workspace_value).expanduser().resolve(),
             test_commands=tuple(tests),
             allowed_binaries=tuple(str(x).lower() for x in data.get("allowed_binaries", ["python", "py", "pytest", "git"])),
             max_rounds=max(1, int(data.get("max_rounds", 3))),
