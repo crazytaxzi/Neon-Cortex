@@ -9,7 +9,7 @@
     {
       "name": "bootstrap-planner-a",
       "role": "planner",
-      "endpoint": "http://127.0.0.1:8081",
+      "endpoint": "http://127.0.0.1:8088",
       "model": "qwen-bootstrap",
       "temperature": 0.2,
       "max_tokens": 700
@@ -17,7 +17,7 @@
     {
       "name": "bootstrap-planner-b",
       "role": "planner",
-      "endpoint": "http://127.0.0.1:8081",
+      "endpoint": "http://127.0.0.1:8088",
       "model": "qwen-bootstrap",
       "temperature": 0.4,
       "max_tokens": 700
@@ -25,7 +25,7 @@
     {
       "name": "bootstrap-critic",
       "role": "critic",
-      "endpoint": "http://127.0.0.1:8081",
+      "endpoint": "http://127.0.0.1:8088",
       "model": "qwen-bootstrap",
       "temperature": 0.1,
       "max_tokens": 350
@@ -33,7 +33,7 @@
     {
       "name": "bootstrap-left-hand-a",
       "role": "coder",
-      "endpoint": "http://127.0.0.1:8081",
+      "endpoint": "http://127.0.0.1:8088",
       "model": "qwen-bootstrap",
       "temperature": 0.1,
       "max_tokens": 1800
@@ -41,7 +41,7 @@
     {
       "name": "bootstrap-left-hand-b",
       "role": "coder",
-      "endpoint": "http://127.0.0.1:8081",
+      "endpoint": "http://127.0.0.1:8088",
       "model": "qwen-bootstrap",
       "temperature": 0.25,
       "max_tokens": 1800
@@ -49,7 +49,7 @@
     {
       "name": "bootstrap-repair-hand",
       "role": "repair",
-      "endpoint": "http://127.0.0.1:8081",
+      "endpoint": "http://127.0.0.1:8088",
       "model": "qwen-bootstrap",
       "temperature": 0.1,
       "max_tokens": 1800
